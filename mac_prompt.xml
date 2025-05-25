@@ -1,0 +1,400 @@
+<role>
+You are an expert MacOS software developer and technician. Please analyse these research reports and synthesise the top 5 causes, ranked from most likely to least likely, with a ranking expressed in % confidence.
+</role>
+
+<report1.md>
+# Diagnosing and Resolving Boot Issues on a 2015 iMac i5 Running macOS Monterey
+
+## Introduction
+
+The issue described—a 2015 iMac i5 running macOS Monterey encountering an infinite spinning beach ball during boot and a "pre-flight error" when attempting to reinstall the operating system in recovery mode—indicates a complex problem. This report will analyze the top three possible causes of this issue, ranked from most likely to least likely, and provide technical solutions and diagnostic steps. The report assumes the user is an experienced software developer familiar with macOS internals and terminal-based troubleshooting.
+
+***
+
+## Top 3 Possible Causes of the Problem
+
+### 1. **Corrupted or Incompatible System Files**
+
+- **Likelihood**: High
+- **Explanation**: The "spinning beach ball" during boot is a strong indicator of system file corruption or incompatibility. macOS Monterey, while technically supported on the 2015 iMac, can sometimes struggle on older hardware, especially if there are lingering issues from previous macOS installations. The "pre-flight error" during reinstallation further suggests that the system may be unable to validate or prepare the target disk for installation due to damaged or missing system files.
+- **Supporting Evidence**: Users in forums have reported similar issues with macOS Monterey on older Macs, particularly when transitioning from older macOS versions or after incomplete updates (Whirlpool Forums (https://forums.whirlpool.net.au/archive/34k62n7l)).
+
+### 2. **Disk or Partition Issues**
+
+- **Likelihood**: Medium
+- **Explanation**: The inability to reinstall macOS and the "pre-flight error" could stem from issues with the internal SSD or HDD. Disk corruption, improper partitioning, or a failing drive can prevent macOS from mounting or preparing the disk for installation. Even if the disk appears functional in Disk Utility, underlying issues may exist.
+- **Supporting Evidence**: Disk-related problems are a common cause of macOS boot and installation errors. Running First Aid in Disk Utility may not always detect deeper issues, as highlighted in user reports (Reddit (https://www.reddit.com/r/MacOS/comments/n2he04/cant_reinstall_from_recovery_mode_get_preflight/)).
+
+### 3. **Hardware Limitations or Failures**
+
+- **Likelihood**: Low
+- **Explanation**: While less likely, hardware issues such as failing RAM, a degraded SSD, or even overheating components could cause the system to hang during boot. The 2015 iMac is nearing a decade old, and hardware degradation is a possibility. Additionally, macOS Monterey is more resource-intensive than older macOS versions, which could exacerbate hardware limitations.
+- **Supporting Evidence**: Reports from users with similar hardware indicate that downgrading to a less demanding macOS version (e.g., Catalina) can resolve performance issues (Whirlpool Forums (https://forums.whirlpool.net.au/archive/34k62n7l)).
+
+***
+
+## Diagnostic Steps and Solutions
+
+### Step 1: Boot into Safe Mode
+
+- **Purpose**: Safe Mode disables non-essential system processes and performs a basic check of the startup disk, potentially bypassing corrupted files.
+- **Procedure**:
+  1. Power off the iMac.
+  2. Turn it on and immediately press and hold the **Shift** key.
+  3. Release the key when the login screen appears.
+- **Expected Outcome**: If the system boots successfully in Safe Mode, the issue likely lies with third-party software or system extensions. Uninstall unnecessary apps or extensions and restart normally (Premier Technology (https://premiercheltenham.com/blogs/guides-and-resources/how-to-fix-common-macos-boot-issues)).
+
+***
+
+### Step 2: Verify and Repair the Disk
+
+- **Purpose**: Identify and repair disk-related issues that could be causing the boot failure or "pre-flight error."
+- **Procedure**:
+  1. Boot into macOS Recovery Mode by holding **Command + R** during startup.
+  2. Open **Disk Utility** and select the internal disk.
+  3. Run **First Aid** to check for and repair errors.
+- **Expected Outcome**: If errors are found and repaired, attempt to boot normally or reinstall macOS. If First Aid fails, consider erasing the disk and reformatting it as **APFS** or **Mac OS Extended (Journaled)** (TechWheon (https://techwheon.com/mac-boot-problems/)).
+
+***
+
+### Step 3: Use Terminal Commands in Recovery Mode
+
+- **Purpose**: Gather additional diagnostic information and attempt advanced repairs.
+- **Procedure**:
+  1. Boot into macOS Recovery Mode and open **Terminal** from the Utilities menu.
+  2. Run the following commands:
+     - **Check disk status**: `diskutil list`
+     - **Repair disk**: `diskutil repairVolume diskX` (replace `diskX` with the appropriate disk identifier).
+     - **Check system integrity**: `fsck -fy`
+     - **Reset NVRAM**: `nvram -c`
+- **Expected Outcome**: These commands can reveal disk or file system issues and reset system settings that may be causing the problem (George Network (https://www.georgenetwork.com/10-essential-terminal-commands-for-mac-recovery-mode/)).
+
+***
+
+### Step 4: Reinstall macOS via Internet Recovery
+
+- **Purpose**: Perform a clean installation of macOS to resolve software-related issues.
+- **Procedure**:
+  1. Boot into Internet Recovery Mode by holding **Option + Command + R** during startup.
+  2. Select **Reinstall macOS** and follow the on-screen instructions.
+- **Expected Outcome**: If successful, this will install the latest compatible macOS version. If the "pre-flight error" persists, the issue may be hardware-related (iBoysoft (https://iboysoft.com/forums/t/com-apple-buildinfo-preflight-error-error-21-cant-reinstall-macos/186)).
+
+***
+
+### Step 5: Use External Bootable Media
+
+- **Purpose**: Bypass potential issues with the internal drive or recovery partition.
+- **Procedure**:
+  1. Create a bootable macOS installer on a USB drive using another Mac:
+     - Download macOS from the App Store.
+     - Use the command: `sudo createinstallmedia --volume /Volumes/MyUSB --applicationpath /Applications/Install\ macOS\ Monterey.app`
+  2. Boot the iMac from the USB drive by holding **Option** during startup and selecting the installer.
+- **Expected Outcome**: This method should allow you to reinstall macOS without relying on the internal recovery partition (Apple Support (https://support.apple.com)).
+
+***
+
+### Step 6: Run Recovery Diagnostics
+
+- **Purpose**: Collect detailed logs to identify the root cause of the issue.
+- **Procedure**:
+  1. Boot into macOS Recovery Mode and open **Terminal**.
+  2. Run the command: `recoverydiagnose -f /path/to/logging/directory` (replace `/path/to/logging/directory` with a writable location, such as an external USB drive).
+- **Expected Outcome**: The diagnostic logs can provide insight into the specific errors occurring during the recovery process (Der Flounder (https://derflounder.wordpress.com/2020/08/06/running-recoverydiagnose-in-macos-recovery/)).
+
+***
+
+## Recommendations
+
+1. **Start with Disk Diagnostics**: Given the age of the iMac and the symptoms, disk issues are a likely culprit. Use Disk Utility and Terminal commands to verify and repair the disk.
+2. **Consider Downgrading macOS**: If the issue persists, consider installing macOS Catalina, which is less resource-intensive and may be more stable on older hardware.
+3. **Backup Data**: If possible, use Target Disk Mode or an external bootable drive to back up important data before proceeding with further troubleshooting.
+
+***
+
+## Conclusion
+
+The infinite spinning beach ball and "pre-flight error" on your 2015 iMac i5 running macOS Monterey are most likely caused by corrupted system files, disk issues, or hardware limitations. Following the outlined diagnostic steps and solutions should help identify and resolve the problem. If all else fails, professional hardware diagnostics may be necessary to rule out hardware failures.
+
+***
+
+## References
+
+1. Whirlpool Forums. (2023, February 19). iMac 27 Inch late 2015 model ID 17,1 - iMac. https://forums.whirlpool.net.au/archive/34k62n7l
+2. iBoysoft Community. (2024, September 3). Com.apple.buildinfo.preflight.error error 21? Can't reinstall macOS! https://iboysoft.com/forums/t/com-apple-buildinfo-preflight-error-error-21-cant-reinstall-macos/186
+3. Reddit. (n.d.). Can't reinstall from recovery mode, get "preflight" error 21. https://www.reddit.com/r/MacOS/comments/n2he04/cant_reinstall_from_recovery_mode_get_preflight/
+4. Premier Technology. (2024, November 19). How to Fix Common macOS Boot Issues. https://premiercheltenham.com/blogs/guides-and-resources/how-to-fix-common-macos-boot-issues
+5. George Network. (n.d.). 10 Essential Terminal Commands for Mac Recovery Mode. https://www.georgenetwork.com/10-essential-terminal-commands-for-mac-recovery-mode/
+6. Der Flounder. (2020, August 6). Running recoverydiagnose in macOS Recovery. https://derflounder.wordpress.com/2020/08/06/running-recoverydiagnose-in-macos-recovery/
+</report1.md>
+
+<report2.md>
+# Diagnosing and Resolving Infinite Beach Ball and Preflight Error on a 2015 iMac Running macOS Monterey
+
+## Introduction
+
+The issue described involves a 2015 iMac i5 running macOS Monterey that hangs on boot with an infinite spinning beach ball. Attempts to reinstall macOS Monterey via Internet Recovery result in a "preflight error," preventing further progress. This report will analyze the top three potential causes of this problem, ranked from most likely to least likely, with technical details and suggested solutions. Additionally, it will outline steps to gather more diagnostic information using the Recovery Mode Terminal.
+
+***
+
+## Top 3 Possible Causes of the Problem
+
+### 1. **Corrupted or Incompatible Disk Partition Map**
+
+The most likely cause of the issue is a corrupted or incompatible disk partition map. The "preflight error" during macOS installation often indicates that the installer cannot verify or prepare the target disk for installation. This can occur if the disk's partition map is damaged or not formatted correctly for macOS.
+
+#### Technical Details:
+
+- macOS requires the target disk to use the GUID Partition Table (GPT) and be formatted as APFS (for macOS Monterey) or HFS+ (Mac OS Extended Journaled for older versions).
+- Corruption in the partition map can prevent the installer from proceeding, resulting in errors such as `com.apple.buildinfo.preflight.error` (Apple Community (https://discussions.apple.com/thread/255059597)).
+- Issues with the disk's metadata can also cause the infinite spinning beach ball during boot, as macOS struggles to load system files.
+
+#### Solution:
+
+1. **Verify and Repair the Disk Using Disk Utility:**
+2. Boot into Recovery Mode (Command + R during startup).
+3. Open Disk Utility and select "View > Show All Devices."
+4. Select the top-level disk (e.g., "APPLE SSD") and click "First Aid" to repair the disk.
+5. If errors are found and cannot be repaired, proceed to erase the disk.
+6. **Erase and Reformat the Disk:**
+7. In Disk Utility, select the top-level disk and click "Erase."
+8. Choose "APFS" as the format and "GUID Partition Map" as the scheme.
+9. Rename the disk (e.g., "Macintosh HD") and confirm the operation.
+10. **Reattempt Installation:**
+11. Restart the iMac and boot into Internet Recovery (Command + Option + R).
+12. Select "Reinstall macOS" and choose the newly formatted disk as the installation target.
+
+#### Additional Logs:
+
+Run the following command in the Terminal (accessible via Recovery Mode) to check the disk's partition structure: `bash diskutil list` This will display all connected disks and their partitions. Look for inconsistencies or errors in the output.
+
+***
+
+### 2. **Software Incompatibility or Kernel Panics**
+
+The second most likely cause is a software incompatibility or recurring kernel panics. Kernel panics can occur due to outdated drivers, incompatible peripherals, or corrupted system files. The infinite spinning beach ball is a symptom of the system being unable to complete the boot process, often caused by these underlying issues.
+
+#### Technical Details:
+
+- Kernel panics are logged in the system's diagnostic files, which can be accessed via the Terminal in Recovery Mode.
+- Updating from macOS Big Sur to Monterey may have introduced compatibility issues with certain hardware drivers or third-party software (Apple Community (https://discussions.apple.com/thread/255788908)).
+- Nonstop kernel panics can corrupt system files, leading to installation errors such as "preflight error."
+
+#### Solution:
+
+1. **Disconnect Peripherals:**
+2. Disconnect all external devices (e.g., USB drives, printers, audio interfaces) and attempt to boot the system again. Faulty peripherals or incompatible drivers can cause kernel panics.
+3. **Check for Kernel Panic Logs:**
+4. Open Terminal in Recovery Mode and run the following command to view recent kernel panic logs: `bash log show --predicate 'eventMessage contains "panic"' --info`
+5. Analyze the logs for clues about the source of the kernel panics (e.g., specific drivers or processes).
+6. **Perform a Clean Installation:**
+7. If kernel panics persist, erase the disk and perform a clean installation of macOS Monterey. Avoid restoring from a Time Machine backup initially, as it may reintroduce corrupted files or incompatible software.
+8. **Update Firmware and Drivers:**
+9. After reinstalling macOS, ensure all firmware and drivers are updated to the latest versions. Check for updates from Apple and third-party hardware manufacturers.
+
+***
+
+### 3. **Network or Internet Recovery Issues**
+
+The third possible cause is a network-related issue during Internet Recovery. The "preflight error" may occur if the macOS installer cannot download required files due to network restrictions, firewall settings, or corrupted installation packages.
+
+#### Technical Details:
+
+- Internet Recovery relies on a stable and unrestricted internet connection to download the macOS installer.
+- Network firewalls or security settings in the router/modem can block necessary connections to Apple's servers (iBoysoft (https://iboysoft.com/forums/t/com-apple-buildinfo-preflight-error-error-21-cant-reinstall-macos/186)).
+- If the macOS installer is partially downloaded or corrupted, it can result in errors during the installation process.
+
+#### Solution:
+
+1. **Check Network Connection:**
+2. Ensure the iMac is connected to a stable Wi-Fi network. Use the Terminal in Recovery Mode to test the connection: `bash ping -c 4 apple.com`
+3. If the connection is unstable, try using a wired Ethernet connection or switching to a different network.
+4. **Bypass Network Restrictions:**
+5. Temporarily disable firewalls or security settings in the router/modem.
+6. Use a mobile hotspot or another network to rule out issues with the primary network.
+7. **Use an External Installer:**
+8. Create a bootable macOS Monterey installer on a USB drive using another Mac: `bash sudo /Applications/Install\ macOS\ Monterey.app/Contents/Resources/createinstallmedia --volume /Volumes/MyVolume`
+9. Boot the iMac from the USB installer (Option key during startup) and proceed with the installation.
+
+***
+
+## Additional Diagnostic Steps
+
+### Accessing Terminal in Recovery Mode
+
+To gather more information about the system and troubleshoot effectively, use the Terminal in Recovery Mode: 1. Boot into Recovery Mode (Command + R during startup). 2. From the "macOS Utilities" screen, select "Utilities > Terminal."
+
+### Useful Commands:
+
+- **Check Disk Health:** `bash diskutil verifyDisk /dev/disk0`
+- **View System Logs:** `bash log show --info`
+- **Reset NVRAM/PRAM:** `bash nvram -c`
+- **Rebuild Boot Files:** `bash bless --folder /Volumes/Macintosh\ HD/System/Library/CoreServices --bootefi`
+
+***
+
+## Conclusion
+
+The infinite spinning beach ball and "preflight error" on your 2015 iMac running macOS Monterey are most likely caused by one of the following issues: 1. Corrupted or incompatible disk partition map. 2. Software incompatibility or kernel panics. 3. Network or Internet Recovery issues.
+
+To resolve the issue, start by verifying and repairing the disk using Disk Utility. If the problem persists, perform a clean installation of macOS Monterey, ensuring that all peripherals are disconnected and kernel panic logs are reviewed. If network issues are suspected, use a bootable installer to bypass Internet Recovery.
+
+By following the outlined steps and using the suggested Terminal commands, you should be able to diagnose and resolve the issue effectively.
+
+***
+
+## References
+
+Apple Community. (2023). com.apple.buildinfo.preflight.error error… - Apple Community. Retrieved from https://discussions.apple.com/thread/255059597
+
+Apple Community. (2024). Attempting to reinstall macos Monterey bu… - Apple Community. Retrieved from https://discussions.apple.com/thread/255788908
+
+iBoysoft. (2024). Com.apple.buildinfo.preflight.error error 21? Can’t reinstall macOS! - macos tips - iBoysoft Community. Retrieved from https://iboysoft.com/forums/t/com-apple-buildinfo-preflight-error-error-21-cant-reinstall-macos/186
+
+OSXDaily. (2017). How to Access Terminal via Recovery Mode for Mac. Retrieved from https://osxdaily.com/2017/05/18/access-terminal-recovery-mode-mac/
+</report2.md>
+
+<report3.md>
+# Diagnosing and Resolving Infinite Beach Ball and "Preflight Error" on a 2015 iMac Running macOS Monterey
+
+## Introduction
+
+The issue described involves a 2015 iMac i5 running macOS Monterey that hangs during boot with an infinite beach ball loading sign. Attempts to reinstall the operating system via Internet Recovery result in a "preflight error," preventing further progress. This report will analyze the top three possible causes of this problem, ranked from most to least likely, and provide technical details, diagnostic steps, and potential solutions. The report assumes the user is an experienced software developer familiar with macOS and its recovery tools.
+
+***
+
+## Top 3 Possible Causes of the Problem
+
+### 1. **Failing or Corrupted Internal Storage (HDD/SSD)**
+
+The most likely cause of the infinite beach ball and subsequent "preflight error" during reinstallation is a failing or corrupted internal storage device. This is a common issue in older machines, particularly those with mechanical hard drives (HDDs) or aging SSDs. A failing drive can result in slow performance, frequent beach balling, and errors during macOS installation.
+
+#### Technical Explanation
+
+- The "preflight error" during macOS installation often occurs when the installer cannot verify the integrity or readiness of the target disk. This can happen due to bad sectors, corrupted file systems, or hardware degradation (Apple StackExchange (https://apple.stackexchange.com/questions/387521/imac-beachballing-for-no-reason-i-suspect-it-might-be-faulty-hardware-what-ca)).
+- The infinite beach ball during boot is a symptom of the system struggling to read or write data from the drive, often due to I/O errors caused by bad sectors or a failing drive controller (Reddit (https://www.reddit.com/r/applehelp/comments/i3u4ca/my_imac_loves_to_spin_beach_balls/)).
+
+#### Diagnostic Steps
+
+1. **Run Disk Utility in Recovery Mode**:
+2. Boot into Recovery Mode by holding `Command + R` during startup.
+3. Open Disk Utility and select the internal drive.
+4. Run "First Aid" to check for and repair disk errors.
+5. If Disk Utility reports errors that cannot be repaired, the drive is likely failing.
+6. **Use Terminal to Inspect Disk Health**:
+7. Open Terminal in Recovery Mode.
+8. Run the command `diskutil list` to verify the drive's partitions.
+9. Use `diskutil verifyVolume /dev/diskX` (replace `diskX` with the appropriate disk identifier) to check for file system corruption.
+10. **Check SMART Status**:
+11. In Terminal, run `diskutil info /dev/diskX` and look for the "SMART Status" field. If it reports "Failing," the drive needs replacement.
+
+#### Solutions
+
+- **Replace the Drive**:
+- If the drive is confirmed to be failing, replace it with a new SSD. SSDs are faster and more reliable than HDDs, significantly improving system performance.
+- After replacing the drive, reinstall macOS using a bootable USB installer or Internet Recovery.
+- **Attempt Data Recovery**:
+- If data on the drive is critical, use third-party tools like Disk Drill or Data Rescue to recover files before replacing the drive.
+
+***
+
+### 2. **Corrupted macOS Installation or Incompatible System Files**
+
+Another potential cause is a corrupted macOS installation or incompatible system files left over from previous updates or installations. This can lead to boot issues and errors during reinstallation.
+
+#### Technical Explanation
+
+- macOS relies on a clean and functional file system to boot and install. Corruption in system files, such as kernel extensions or boot records, can cause the system to hang indefinitely (Apple Community (https://discussions.apple.com/thread/252222810)).
+- Updating from older macOS versions (e.g., Big Sur) to Monterey can sometimes result in residual files or incompatible drivers causing kernel panics or installation errors (Apple Community (https://discussions.apple.com/thread/255788908)).
+
+#### Diagnostic Steps
+
+1. **Inspect System Logs**:
+2. Boot into Recovery Mode and open Terminal.
+3. Use the command `log show --predicate 'eventMessage contains "error"' --info` to review system logs for errors during boot.
+4. **Reinstall macOS**:
+5. Attempt to reinstall macOS from Recovery Mode. If the "preflight error" persists, this indicates deeper issues with the file system or hardware.
+6. **Check for Kernel Panics**:
+7. Use the command `nvram -p` in Terminal to inspect NVRAM for kernel panic logs.
+8. Look for entries like `boot-args` that may indicate issues with kernel extensions.
+
+#### Solutions
+
+- **Erase the Disk and Reinstall macOS**:
+- In Recovery Mode, use Disk Utility to erase the disk entirely. Select "APFS" as the format for SSDs or "Mac OS Extended (Journaled)" for HDDs.
+- Reinstall macOS using Internet Recovery or a bootable installer.
+- **Create a Bootable macOS Installer**:
+- Use another Mac to create a bootable USB installer for macOS Monterey. This bypasses potential issues with Internet Recovery.
+
+***
+
+### 3. **Network or Internet Recovery Issues**
+
+The "preflight error" may also result from network-related issues during Internet Recovery. While less likely than hardware or file system problems, this can occur if the iMac cannot establish a stable connection to Apple's servers.
+
+#### Technical Explanation
+
+- Internet Recovery relies on a stable network connection to download the macOS installer. Network interruptions, DNS misconfigurations, or router issues can cause the process to fail.
+- The "preflight error" may also indicate that the installer cannot verify the macOS image due to corrupted downloads or certificate mismatches (Apple StackExchange (https://apple.stackexchange.com/questions/475360/internet-recovery-fails-to-reinstall-with-preflight-error-21)).
+
+#### Diagnostic Steps
+
+1. **Test Network Connectivity**:
+2. In Recovery Mode, open Terminal and run `ping apple.com` to verify internet connectivity.
+3. Use `ifconfig` to check the network interface status.
+4. **Switch to a Wired Connection**:
+5. If using Wi-Fi, switch to an Ethernet connection for a more stable network.
+6. **Use Internet Recovery Diagnostics**:
+7. Boot into Internet Recovery (`Option + Command + R`) and check for error messages during the process.
+
+#### Solutions
+
+- **Reset Network Settings**:
+- Restart the router and ensure the iMac is connected to a reliable network.
+- In Terminal, reset network settings with `networksetup -setdnsservers Wi-Fi empty` to clear DNS configurations.
+- **Use a Bootable Installer**:
+- If Internet Recovery fails consistently, create a bootable macOS installer on another Mac and use it to reinstall the OS.
+
+***
+
+## Additional Diagnostic Tools and Commands in Recovery Mode
+
+### 1. **EtreCheck**
+
+- EtreCheck is a diagnostic tool that provides detailed reports on system health, including hardware issues and software conflicts. While it cannot be run in Recovery Mode, it can be used after booting into Safe Mode (if possible).
+
+### 2. **fsck Command**
+
+- Use the `fsck` command in Single User Mode to manually check and repair the file system:
+- Boot into Single User Mode (`Command + S` during startup).
+- Run `/sbin/fsck -fy` and follow the on-screen instructions.
+
+### 3. **Reset NVRAM and SMC**
+
+- Resetting NVRAM and SMC can resolve boot issues caused by corrupted settings:
+- NVRAM: Restart the iMac and hold `Option + Command + P + R` for 20 seconds.
+- SMC: Shut down the iMac, unplug it for 15 seconds, and then reconnect and restart.
+
+***
+
+## Conclusion
+
+The infinite beach ball and "preflight error" on your 2015 iMac are most likely caused by a failing internal drive, corrupted macOS installation, or network issues during Internet Recovery. Diagnosing the issue requires a combination of disk health checks, system log analysis, and network troubleshooting. If the internal drive is failing, replacing it with an SSD is the most effective solution. For software-related issues, erasing the disk and reinstalling macOS using a bootable installer is recommended. By following the steps outlined in this report, you can identify and resolve the root cause of the problem.
+
+***
+
+## References
+
+- Apple StackExchange. (2020). iMac beachballing for no reason — I suspect it might be faulty hardware. What can I do to work around it? Ask Different. https://apple.stackexchange.com/questions/387521/imac-beachballing-for-no-reason-i-suspect-it-might-be-faulty-hardware-what-ca
+- Apple Community. (2020). iMac late 2015 27" Retina beach-balling after Big Sur upgrade. Apple Discussions. https://discussions.apple.com/thread/252222810
+- Apple Community. (2024). Attempting to reinstall macOS Monterey but receiving: "com.apple.BuildInfo.preflight.error." Apple Discussions. https://discussions.apple.com/thread/255788908
+- Reddit. (2020). My iMac Loves to Spin Beach Balls. r/AppleHelp. https://www.reddit.com/r/applehelp/comments/i3u4ca/my\\_imac\\_loves\\_to\\_spin\\_beach\\_balls/ (https://www.reddit.com/r/applehelp/comments/i3u4ca/my%5C_imac%5C_loves%5C_to%5C_spin%5C_beach%5C_balls/)
+- Apple StackExchange. (2024). Internet recovery fails to reinstall with "preflight error 21." Ask Different. https://apple.stackexchange.com/questions/475360/internet-recovery-fails-to-reinstall-with-preflight-error-21
+</report3.md>
+
+<instructions>Provide high levels of technical detail, suitable for a mid-level software engineer. Assume familiarity with the terminal</instructions>
+<instructions>Include your reasoning for each suggestion</instructions>
+<instructions>Include your reasoning for the ranking</instructions>
+<instructions>Once the rankings are initially produced, internally iterate over them again for validity, and modify as necessary</instructions>
+<instructions>Produce a summary at the end with an compressed list of rankings and the steps forward</instructions>
+<instructions>Breakdown each ranked solution into detailed implementation steps</instructions>
+

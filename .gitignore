@@ -41,3 +41,8 @@ package-lock.json
 
 #Vim swp files
 *.swp
+.aider*
+
+
+# Auto-added sensitive files
+docs/blog/authors.yml

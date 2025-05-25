@@ -2,11 +2,11 @@ import asyncio
 import typer
 import os
 import subprocess
-
-app = typer.Typer()
 from typing import Any
 import markdown
 from gpt_researcher import GPTResearcher
+
+app = typer.Typer()
 
 
 async def submit_query(researcher: GPTResearcher):
@@ -35,7 +35,9 @@ def main(
     input_prompt: str = typer.Option(None, help="Filename for input prompt"),
     output_file: str = typer.Option(None, help="Filename for output file"),
     report_type: str = typer.Option("detailed_report", help="Type of report"),
-    output_format: str = typer.Option("md", help="Output format: md | html | json | yaml")
+    output_format: str = typer.Option(
+        "md", help="Output format: md | html | json | yaml"
+    ),
 ):
     queries_dir = "queries"
     if not os.path.exists(queries_dir):
